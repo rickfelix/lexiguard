@@ -2,11 +2,18 @@
 
 ## Replit Environment Setup
 
-This project is currently a docs-only spec/design phase — no application code has been written yet. To make it preview-able in Replit, the approved HTML design (`docs/designs/screen-0.html`) is copied to `public/index.html` and served as a static site.
+The app is a Vite + React + TypeScript scaffold. Only the shell, brand-color hookup, and a single `/` route exist — no features yet.
 
-- **Workflow:** `Start application` runs `python3 -m http.server 5000 --bind 0.0.0.0 --directory public` (port 5000, webview)
-- **Deployment:** Configured as a `static` deployment serving the `public/` directory
-- **When real app code is added:** Replace the workflow command with the actual dev server (and update `public/` and the deployment config accordingly)
+- **Stack:** Vite 8, React 18, TypeScript, Tailwind CSS, React Router v7
+- **Workflow:** `Start application` runs `npm run dev` (Vite dev server on port 5000, host `0.0.0.0`, `allowedHosts: true`)
+- **Folder layout:**
+  - `src/components/` — shared UI (`Layout.tsx`, `Header.tsx`)
+  - `src/pages/` — route components (`Home.tsx`)
+  - `src/lib/` — utilities (empty)
+  - `src/styles/globals.css` — Tailwind + brand CSS custom properties
+- **Brand colors:** Defined as CSS custom properties in `src/styles/globals.css` (copied verbatim from `docs/color-palette.md`) and exposed to Tailwind as `bg-brand-primary`, `text-brand-accent`, etc.
+- **Nav pattern:** Top sticky horizontal nav bar with logo on the left and links + CTA on the right — matches `docs/designs/screen-0.html` (the only design file).
+- **Deployment:** Not yet reconfigured for the new Vite app. Update before publishing.
 
 ## File Map
 

@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-logo: #1D4ED8; /* Logo, primary CTAs, headings, key UI elements, links. */
+  --brand-highlighting-key-insights: #FBBF24; /* Highlighting key insights, callouts, accents in illustrations, secondary buttons. */
+  --brand-body-text: #1F2937; /* Body text, paragraphs, secondary information. */
+  --brand-main-background-color-for-the-application-and-website: #F9FAFB; /* Main background color for the application and website. */
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--brand-main-background-color-for-the-application-and-website);
+  color: var(--brand-body-text);
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

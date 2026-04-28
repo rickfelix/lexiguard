@@ -1,0 +1,30 @@
+Build a Expo (React Native) application: Freelancers and their clients operate in a high-friction environment, struggling with project scope creep, payment disputes, and administrative overhe...
+
+Binding contract — read first (these are the chairman-approved inputs the build must fulfill):
+- docs/spec.md — integrated product specification (problem, users, architecture, screens). Single-file reference if you need cross-section context.
+- docs/marketing-copy.md — approved positioning, taglines, landing CTA, email subjects. Build features that deliver these promises.
+- docs/designs/ — approved HTML designs. Match the layout and the majority navigation pattern.
+- docs/color-palette.md — brand CSS custom properties. Use only these colors.
+- docs/branding.md — typography and persona voice.
+- docs/architecture.md — tech stack, data model, API surface, schema. Use these decisions; do not re-derive.
+- docs/tasks.md — pre-decomposed implementation steps with acceptance criteria. Canonical task list once Plan Mode is approved.
+- docs/gtm-strategy.md — go-to-market positioning context.
+
+MVP Features (top 5 of 5 by priority):
+1. Build and Deploy Marketing Landing Page (4 pts) — Create the public-facing landing page based on the approved marketing copy. This page must include the hero headline, subheadline, and a functional 'Analyze Contract Free' CTA to capture initial user interest from our target persona, Devan.
+   Done when: The page is live at the root URL. It contains the exact hero copy from the S18 document. The 'Analyze Contract Free' button is present, clickable, and directs the user to the start of the analysis workflow.
+2. Implement Contract Upload and Analysis Trigger (7 pts) — Develop the user workflow that begins after the landing page CTA. This includes a simple interface for Devan to upload a contract document and a backend API endpoint to receive the file and trigger the AI analysis job.
+   Done when: A user can select a document from their local machine and upload it. The '/documents' API endpoint successfully receives the file, stores it, and queues a job for the 'AI Analysis Service'. The user sees a 'processing' state in the UI.
+3. Integrate AI Model for IP Risk Analysis (6 pts) — Connect the 'AI Analysis Service' to an external AI model. This involves creating a service that takes a document as input, sends it to the AI with a prompt engineered to identify common IP risks in software contracts, and stores the structured result.
+   Done when: The 'AI Analysis Service' can successfully process a queued job. It calls the external AI API and receives a valid analysis. The raw analysis data is saved to the 'Analysis_Results' table, linked to the user and document.
+4. Create Analysis Results Display Dashboard (5 pts) — Build the frontend dashboard to present the AI's findings to Devan. This page will fetch the analysis results for a specific document and display the flagged IP risks and legalese translations in a clear, easy-to-understand format.
+   Done when: When an analysis is complete, the user can view a results page. The page correctly displays at least one flagged risk and one plain-language translation from the 'Analysis_Results' table.
+5. Provision Initial Cloud Infrastructure (2 pts) — Set up the foundational infrastructure on Vercel and Supabase. This includes creating the Vercel project for hosting, the Supabase project for database and auth, and defining the initial database schema for Users, Documents, and Analysis_Results tables.
+   Done when: Vercel project is live and connected to the code repository. Supabase instance is accessible, and the required tables are created via SQL script. Environment variables are configured for secure API access.
+
+
+Out of Scope for this sprint:
+- Social login / OAuth providers
+- Email notifications
+- Admin dashboard
+- Analytics / tracking
