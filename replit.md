@@ -1,5 +1,13 @@
 # LexiGuard
 
+## Replit Environment Setup
+
+This project is currently a docs-only spec/design phase — no application code has been written yet. To make it preview-able in Replit, the approved HTML design (`docs/designs/screen-0.html`) is copied to `public/index.html` and served as a static site.
+
+- **Workflow:** `Start application` runs `python3 -m http.server 5000 --bind 0.0.0.0 --directory public` (port 5000, webview)
+- **Deployment:** Configured as a `static` deployment serving the `public/` directory
+- **When real app code is added:** Replace the workflow command with the actual dev server (and update `public/` and the deployment config accordingly)
+
 ## File Map
 
 Read these files in order when starting a new feature:

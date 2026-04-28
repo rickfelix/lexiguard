@@ -1,0 +1,475 @@
+<!--
+  DESIGN INTENT:
+  Seed: 22
+  Mood: Austere
+  Customer: Devan the Developer, seeking clarity and precision in legal contracts.
+  Layout thesis: An asymmetric editorial layout using grid offsets and sidebar structuralism.
+  Distinctive move: Vertical offset of the hero imagery (80px) and a sidebar-anchored feature grid to create a sophisticated, non-traditional reading rhythm.
+  Color strategy: PRESERVED - #F9FAFB, #1D4ED8, #FBBF24, #1F2937.
+--><!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=1440, initial-scale=1.0" name="viewport"/>
+<title>LexiGuard | Legal Clarity. On Your Terms.</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            /* Colors - DO NOT CHANGE */
+            --color-primary: #1D4ED8;
+            --color-accent: #FBBF24;
+            --color-text: #1F2937;
+            --color-bg: #F9FAFB;
+            --color-white: #FFFFFF;
+            
+            /* Spacing (8px grid) */
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --space-48: 48px;
+            --space-64: 64px;
+            --space-80: 80px;
+            --space-120: 120px;
+
+            /* Typography - DO NOT CHANGE */
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            
+            --type-display: clamp(5rem, 10vw, 9rem);
+            --type-h1: clamp(2.5rem, 5vw, 4rem);
+            --type-h2: clamp(1.5rem, 3vw, 2.25rem);
+            --type-body: clamp(1rem, 1.25vw, 1.125rem);
+            
+            /* UI Elements */
+            --radius-0: 0px;
+            --transition: cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Accessibility: Focus States */
+        :focus-visible {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Layout Architecture */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--space-80);
+        }
+
+        /* Header & Navigation */
+        header {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: rgba(249, 250, 251, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(29, 78, 216, 0.1);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        nav ul {
+            display: flex;
+            gap: var(--space-48);
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--color-primary);
+        }
+
+        /* Hero Section - ASYMMETRIC VARIANT */
+        .hero {
+            padding: var(--space-80) 0 var(--space-120);
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: var(--space-80);
+            align-items: center;
+        }
+
+        .hero__display-wrap {
+            grid-column: 1 / -1;
+            margin-bottom: var(--space-32);
+        }
+
+        .hero__display {
+            font-family: var(--font-serif);
+            font-size: var(--type-display);
+            line-height: 0.9;
+            color: var(--color-primary);
+            letter-spacing: -0.04em;
+            margin-left: -10px;
+            animation: slideInUp 1.2s var(--transition);
+        }
+
+        .hero__content {
+            max-width: 50ch;
+            animation: fadeIn 1.5s var(--transition) 0.3s both;
+        }
+
+        .hero__tagline {
+            font-size: var(--type-h2);
+            font-family: var(--font-serif);
+            margin-bottom: var(--space-32);
+            color: var(--color-primary);
+        }
+
+        .hero__description {
+            font-size: var(--type-body);
+            margin-bottom: var(--space-48);
+            color: var(--color-text);
+        }
+
+        /* Offset Hero Image - NEW LAYOUT MOVE */
+        .hero__image-container {
+            position: relative;
+            transform: translateY(80px); /* Vertical offset requirement */
+            aspect-ratio: 4/5;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .hero__image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-24) var(--space-48);
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform var(--transition), background var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn--primary {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-4px);
+            background-color: #1a44bc;
+        }
+
+        /* Sidebar Section Layout - NEW LAYOUT MOVE */
+        .section-with-sidebar {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--space-80);
+            padding: var(--space-80) 0;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--color-primary);
+            margin-bottom: var(--space-24);
+            display: block;
+            font-weight: 600;
+        }
+
+        /* Feature Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-4);
+            background-color: rgba(29, 78, 216, 0.1);
+            border: 1px solid rgba(29, 78, 216, 0.1);
+        }
+
+        .feature-card {
+            background: var(--color-white);
+            padding: var(--space-64) var(--space-48);
+            transition: background var(--transition);
+        }
+
+        .feature-card:hover {
+            background: var(--color-bg);
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            margin-bottom: var(--space-24);
+            color: var(--color-primary);
+        }
+
+        .feature-card p {
+            color: var(--color-text);
+            max-width: 35ch;
+        }
+
+        .feature-card__icon {
+            width: 48px;
+            height: 2px;
+            background: var(--color-accent);
+            margin-bottom: var(--space-32);
+        }
+
+        /* Editorial Section */
+        .editorial {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-120);
+            align-items: center;
+            padding: var(--space-80) 0;
+        }
+
+        .editorial__image {
+            background: #e5e7eb;
+            aspect-ratio: 4/5;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .editorial__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1);
+            transition: filter 0.8s var(--transition);
+        }
+
+        .editorial__image:hover img {
+            filter: grayscale(0);
+        }
+
+        .editorial__content h2 {
+            font-family: var(--font-serif);
+            font-size: var(--type-h1);
+            line-height: 1.1;
+            margin-bottom: var(--space-48);
+        }
+
+        .highlight-box {
+            background: var(--color-accent);
+            padding: var(--space-48);
+            margin-top: var(--space-48);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Footer */
+        footer {
+            padding: var(--space-80) 0;
+            border-top: 1px solid rgba(29, 78, 216, 0.1);
+        }
+
+        .footer__grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: var(--space-80);
+        }
+
+        .footer__logo {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--space-24);
+            display: block;
+        }
+
+        .footer__links h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-32);
+        }
+
+        .footer__links ul {
+            list-style: none;
+        }
+
+        .footer__links li {
+            margin-bottom: var(--space-16);
+        }
+
+        .footer__links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-size: 0.9rem;
+        }
+
+    </style>
+<script type='text/javascript' nonce='ZaOWvIxxBqdKDfHxeknr2g==' src='https://contribution.usercontent.google.com/hxOFr79dk9-9BVSnYNDskzkD1R5LFmQGwJNmNh3vEhowPT7TqQut5J9bw6TB-vjCPydK3dtd-EZPtKbwkObSj_hhIbIqt27Hs2VggvW7AwjpQG1YTSF0uVLcHdV-2HdKfxNUx06wld1rPLw3RPeU1uqD3Z3Ci3evdVPtkXZoSw0b-QYwVd2yofp35pZ15ttYLsXawWOBlZCb5uSai7tL5NkBLuQzz7-zCktV5Z8BYKMcsfCUfYVR-LlbFiH13dyCU8UeXFq54_BB_sLCwEPOVZ1_SbU_r8ad5rDH-b5sg-qsDAgz1sujRvKJQSE3Uaa9G8gfrMXvyIbVXVueg7ajoW3miacs0dJbanpOyXmAHQtg7P9FRcQSlLIuJA1iOsY62zbechfjGcTIuv7rhAcQPiRi4yNLUbkCnCFjrf5MD1qBr_P1ohq1eZ1yGboV6enyF_MpDQNjDXZAX9ZwC53yyN6iqAl-rrQCVbc873bl_8xXAECOfobLB87mAqfOoLXCdkGnVTSRy4nbZ7OIwrjedyO6ha5CISK-3WbrpminGAkwSaxLuddGRJo3-r-gWP4Q5LlknlTwJhcHxk7N-HiTwYCUjw0upeAcsn11eT_xqw-Op10ikOcg4k5twTLxwzrXfiYHlJ5ETaI-ekiZI2F4ujKAWD1-mdEddHdOIo9qlatwkXwUervXZerLQFWdAlnZmJedxHW7jB7-BcyAxe2sQPx4JS37bbC1xp50QYEFBh7aX6s2m-OZX3hEJrV0ElVh0YM4_Sc3AeENJaUsdK0zk5aSHAlIvNLTkSdRFQ'></script></head>
+<body>
+<div class="container">
+<header>
+<a class="logo" href="#">LexiGuard</a>
+<nav>
+<ul>
+<li><a href="#features">Intelligence</a></li>
+<li><a href="#solutions">For Freelancers</a></li>
+<li><a href="#pricing">Pricing</a></li>
+<li><a class="btn btn--primary" href="#" style="padding: 12px 24px; font-size: 0.8rem;">Secure Access</a></li>
+</ul>
+</nav>
+</header>
+<main>
+<!-- Hero Section - ASYMMETRIC VARIANT -->
+<section class="hero">
+<div class="hero__display-wrap">
+<h1 class="hero__display">LexiGuard.</h1>
+</div>
+<div class="hero__content">
+<p class="hero__tagline">Legal Clarity. On Your Terms.</p>
+<p class="hero__description">
+                    The software stack for your business is modern. Your legal stack should be too. We translate complex contracts into plain language, identifying risks before you sign.
+                </p>
+<a class="btn btn--primary" href="#">Start Translation</a>
+</div>
+<div class="hero__image-container">
+<img alt="Professional working at a desk" src="https://lh3.googleusercontent.com/aida/ADBb0ui6jR-yKr75YbPxIX0u7ESwMM1hlcOZ0VHusSPb17nFGttcT1vwQo1yMqH4cC5w6gQjQVGOKvPtRCVS5h4PJp_TaIuEL02MwNicbL7nl__irlN8ZlVmyIB5k18XunGbkwINbU_DkO0_t9HAE06U1G_slqDqFmeOxPiLooc5QfbluqZ81J3J0J7CZW6WXHRtBjeaKHa6y0_YUurWiNdfc2bFaY2-LYNu0JpDghquVWTHNNEoHnNVzXWN1w"/>
+</div>
+</section>
+<!-- Features Section - SIDEBAR LAYOUT -->
+<section class="section-with-sidebar" id="features">
+<aside>
+<span class="section-label">Core Capabilities</span>
+<h2 style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--color-primary); line-height: 1.2;">Intelligence for the builder economy.</h2>
+</aside>
+<div class="features-grid">
+<article class="feature-card">
+<div class="feature-card__icon"></div>
+<h3>Plain Language AI</h3>
+<p>Our neural models decompose legalese into actionable insights, ensuring you understand every clause of your MSA or SOW.</p>
+</article>
+<article class="feature-card">
+<div class="feature-card__icon"></div>
+<h3>Risk Forensics</h3>
+<p>Specialized analysis for software development contracts. We flag predatory IP clauses and liability gaps instantly.</p>
+</article>
+<article class="feature-card">
+<div class="feature-card__icon"></div>
+<h3>Clause Engine</h3>
+<p>Don't just read—renegotiate. Get AI-powered suggestions for protective clauses tailored to your specific project needs.</p>
+</article>
+<article class="feature-card" style="background: var(--color-primary); color: var(--color-white);">
+<div class="feature-card__icon" style="background: var(--color-accent);"></div>
+<h3 style="color: var(--color-white);">Built for Devs</h3>
+<p style="color: rgba(255,255,255,0.8);">Engineered by legal experts who understand the nuances of intellectual property in the digital age.</p>
+</article>
+</div>
+</section>
+<!-- Editorial Impact Section -->
+<section class="editorial">
+<div class="editorial__image">
+<img alt="Diverse female software developer smiling confidently while working in her modern home office." src="https://lh3.googleusercontent.com/aida/ADBb0ui6jR-yKr75YbPxIX0u7ESwMM1hlcOZ0VHusSPb17nFGttcT1vwQo1yMqH4cC5w6gQjQVGOKvPtRCVS5h4PJp_TaIuEL02MwNicbL7nl__irlN8ZlVmyIB5k18XunGbkwINbU_DkO0_t9HAE06U1G_slqDqFmeOxPiLooc5QfbluqZ81J3J0J7CZW6WXHRtBjeaKHa6y0_YUurWiNdfc2bFaY2-LYNu0JpDghquVWTHNNEoHnNVzXWN1w"/>
+</div>
+<div class="editorial__content">
+<span class="section-label">Empowerment</span>
+<h2>You code with precision. Now sign with it.</h2>
+<p class="hero__description">
+                    Freelancing shouldn't feel like a legal gamble. LexiGuard provides the expertise of a personal counsel at a fraction of the cost, built specifically for the needs of independent creators.
+                </p>
+<div class="highlight-box">
+<p style="font-weight: 600; color: var(--color-primary);">"LexiGuard turned a 40-page Master Services Agreement into a 5-minute read. I knew exactly what I was signing."</p>
+<p style="margin-top: 16px; font-size: 0.9rem;">— Devan, Lead Developer</p>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="footer__grid">
+<div>
+<span class="footer__logo">LexiGuard</span>
+<p style="max-width: 30ch;">Accessible legal empowerment for the modern independent professional.</p>
+</div>
+<div class="footer__links">
+<h4>Platform</h4>
+<ul>
+<li><a href="#">Risk Analysis</a></li>
+<li><a href="#">Template Library</a></li>
+<li><a href="#">Security</a></li>
+</ul>
+</div>
+<div class="footer__links">
+<h4>Company</h4>
+<ul>
+<li><a href="#">Mission</a></li>
+<li><a href="#">Privacy</a></li>
+<li><a href="#">Terms</a></li>
+</ul>
+</div>
+</div>
+<div style="margin-top: 80px; padding-top: 32px; border-top: 1px solid rgba(0,0,0,0.05); font-size: 0.8rem; opacity: 0.6;">
+            © 2024 LexiGuard. Built for those who build.
+        </div>
+</footer>
+</div>
+</body></html>
