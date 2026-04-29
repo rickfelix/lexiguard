@@ -11,38 +11,38 @@ export default function Header() {
           LexiGuard
         </Link>
         <nav>
-          <ul className="flex items-center gap-12 list-none m-0 p-0">
-            <li>
+          <ul className="flex items-center gap-6 sm:gap-12 list-none m-0 p-0">
+            <li className="hidden sm:block">
               <a
-                href="#features"
+                href="/#features"
                 className="text-sm font-medium uppercase tracking-wider text-brand-text hover:text-brand-primary transition-colors no-underline"
               >
                 Intelligence
               </a>
             </li>
-            <li>
+            <li className="hidden sm:block">
               <a
-                href="#solutions"
+                href="/#solutions"
                 className="text-sm font-medium uppercase tracking-wider text-brand-text hover:text-brand-primary transition-colors no-underline"
               >
                 For Freelancers
               </a>
             </li>
-            <li>
+            <li className="hidden sm:block">
               <a
-                href="#pricing"
+                href="/#pricing"
                 className="text-sm font-medium uppercase tracking-wider text-brand-text hover:text-brand-primary transition-colors no-underline"
               >
                 Pricing
               </a>
             </li>
             <li>
-              <a
-                href="#access"
+              <Link
+                to="/upload"
                 className="inline-flex items-center px-6 py-3 font-semibold text-xs uppercase tracking-wider bg-brand-primary text-white no-underline transition-transform hover:-translate-y-0.5"
               >
                 Secure Access
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

@@ -1,0 +1,35 @@
+# Feature: Build and Deploy Marketing Landing Page
+
+Create the public-facing landing page based on the approved marketing copy. This page must include the hero headline, subheadline, and a functional 'Analyze Contract Free' CTA to capture initial user interest from our target persona, Devan.
+
+**Story Points**: 4 | **Priority**: critical
+
+### Acceptance Criteria
+The page is live at the root URL. It contains the exact hero copy from the S18 document. The 'Analyze Contract Free' button is present, clickable, and directs the user to the start of the analysis workflow.
+
+> This is feature 1 of 5.
+
+**Relevant Architecture:**
+A serverless architecture leveraging Vercel for hosting and Supabase for data and auth, designed to power an AI-driven legal document analysis platform for freelancers and small businesses.
+
+**Layers**:
+- **presentation**: React + Vite + Tailwind — Document Editor/Uploader, Analysis Dashboard, User Profile Management, Clause & Template Library
+- **api**: REST via Vercel Functions — /documents (CRUD for documents), /analysis (Endpoints to trigger AI processing), /users (User profile and settings ...
+
+
+**Logo:**
+- If `docs/stitch/DESIGN.md` exists, use the logo specs from it
+- Otherwise, generate a simple SVG text logo using the app name and primary brand color from `docs/color-palette.md`
+- Save as `public/logo.svg` and reference it in the header/nav
+
+**Read first (binding contract for this feature):**
+- docs/marketing-copy.md — chairman-approved positioning. This feature must deliver the promises relevant to it (landing-hero CTA, app-store description claims, email value-prop).
+- docs/designs/ — approved HTML mockups. Match the layout and the majority navigation pattern.
+- docs/color-palette.md — brand CSS custom properties. Use only these colors.
+- docs/branding.md — typography and persona voice (target persona named in marketing-copy.md).
+
+**Instructions:**
+- Implement this feature completely before moving to the next
+- Match docs/designs/ visually; use docs/color-palette.md tokens only
+- Test the feature works end-to-end before proceeding
+- Checkpoint after completion
