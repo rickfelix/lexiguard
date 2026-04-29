@@ -6,6 +6,7 @@ import {
   timestamp,
   jsonb,
   integer,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -34,26 +35,34 @@ export const documents = pgTable("documents", {
     .defaultNow(),
 });
 
-export const analysisResults = pgTable("analysis_results", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  documentId: varchar("document_id")
-    .notNull()
-    .references(() => documents.id, { onDelete: "cascade" }),
-  userId: varchar("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  summary: text("summary"),
-  risks: jsonb("risks").notNull().$type<RiskFinding[]>().default([]),
-  translations: jsonb("translations")
-    .notNull()
-    .$type<TranslationFinding[]>()
-    .default([]),
-  rawResponse: jsonb("raw_response"),
-  modelUsed: varchar("model_used", { length: 80 }),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-});
+export const analysisResults = pgTable(
+  "analysis_results",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    documentId: varchar("document_id")
+      .notNull()
+      .references(() => documents.id, { onDelete: "cascade" }),
+    userId: varchar("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    summary: text("summary"),
+    risks: jsonb("risks").notNull().$type<RiskFinding[]>().default([]),
+    translations: jsonb("translations")
+      .notNull()
+      .$type<TranslationFinding[]>()
+      .default([]),
+    rawResponse: jsonb("raw_response"),
+    modelUsed: varchar("model_used", { length: 80 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    documentIdUnique: uniqueIndex("analysis_results_document_id_key").on(
+      t.documentId
+    ),
+  })
+);
 
 export type RiskSeverity = "low" | "medium" | "high";
 

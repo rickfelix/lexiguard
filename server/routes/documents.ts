@@ -8,9 +8,35 @@ import { runAnalysis } from "../services/ai";
 export const documentsRouter = Router();
 
 const MAX_BYTES = 1_000_000;
+const ALLOWED_EXTENSIONS = new Set([".txt", ".md"]);
+const ALLOWED_MIME_PREFIXES = ["text/"];
+const ALLOWED_MIMES = new Set([
+  "application/octet-stream", // some browsers send this for .md
+]);
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: MAX_BYTES },
+  fileFilter: (_req, file, cb) => {
+    const lower = (file.originalname || "").toLowerCase();
+    const dot = lower.lastIndexOf(".");
+    const ext = dot >= 0 ? lower.slice(dot) : "";
+    const mime = (file.mimetype || "").toLowerCase();
+
+    const extOk = ALLOWED_EXTENSIONS.has(ext);
+    const mimeOk =
+      ALLOWED_MIMES.has(mime) ||
+      ALLOWED_MIME_PREFIXES.some((p) => mime.startsWith(p));
+
+    if (!extOk || !mimeOk) {
+      const err = new Error(
+        "Only plain text contracts (.txt or .md) are supported. Paste the text instead if your file is a different format."
+      ) as Error & { code?: string };
+      err.code = "INVALID_FILE_TYPE";
+      return cb(err);
+    }
+    cb(null, true);
+  },
 });
 
 function getUserId(req: Request): string {
@@ -33,6 +59,11 @@ function uploadSingleFile(req: Request, res: Response, next: (err?: unknown) => 
         return res.status(413).json({
           error: "File is too large. The maximum size is 1 MB.",
         });
+      }
+      if (code === "INVALID_FILE_TYPE") {
+        return res
+          .status(415)
+          .json({ error: (err as Error).message });
       }
       console.error("[documents] upload failed:", err);
       return res.status(400).json({ error: "Could not read uploaded file." });
