@@ -4,11 +4,14 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur bg-[rgba(249,250,251,0.9)] border-b border-[rgba(29,78,216,0.1)]">
       <div className="mx-auto w-full max-w-[1440px] h-[100px] px-6 sm:px-12 lg:px-20 flex items-center justify-between">
-        <Link
-          to="/"
-          className="font-serif text-2xl font-bold text-brand-primary tracking-tight no-underline"
-        >
-          LexiGuard
+        <Link to="/" className="no-underline" aria-label="LexiGuard home">
+          <img
+            src="/logo.svg"
+            alt="LexiGuard"
+            width={160}
+            height={30}
+            className="block h-8 w-auto"
+          />
         </Link>
         <nav>
           <ul className="flex items-center gap-6 sm:gap-12 list-none m-0 p-0">
