@@ -32,7 +32,8 @@ import {
   text,
   timestamp,
   jsonb,
-  integer
+  integer,
+  uniqueIndex
 } from "drizzle-orm/pg-core";
 var users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -50,17 +51,25 @@ var documents = pgTable("documents", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
 });
-var analysisResults = pgTable("analysis_results", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  documentId: varchar("document_id").notNull().references(() => documents.id, { onDelete: "cascade" }),
-  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-  summary: text("summary"),
-  risks: jsonb("risks").notNull().$type().default([]),
-  translations: jsonb("translations").notNull().$type().default([]),
-  rawResponse: jsonb("raw_response"),
-  modelUsed: varchar("model_used", { length: 80 }),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
-});
+var analysisResults = pgTable(
+  "analysis_results",
+  {
+    id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+    documentId: varchar("document_id").notNull().references(() => documents.id, { onDelete: "cascade" }),
+    userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    summary: text("summary"),
+    risks: jsonb("risks").notNull().$type().default([]),
+    translations: jsonb("translations").notNull().$type().default([]),
+    rawResponse: jsonb("raw_response"),
+    modelUsed: varchar("model_used", { length: 80 }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (t) => ({
+    documentIdUnique: uniqueIndex("analysis_results_document_id_key").on(
+      t.documentId
+    )
+  })
+);
 
 // server/db.ts
 if (!process.env.DATABASE_URL) {
@@ -252,9 +261,31 @@ function normalizeTranslation(raw) {
 // server/routes/documents.ts
 var documentsRouter = Router();
 var MAX_BYTES = 1e6;
+var ALLOWED_EXTENSIONS = /* @__PURE__ */ new Set([".txt", ".md"]);
+var ALLOWED_MIME_PREFIXES = ["text/"];
+var ALLOWED_MIMES = /* @__PURE__ */ new Set([
+  "application/octet-stream"
+  // some browsers send this for .md
+]);
 var upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: MAX_BYTES }
+  limits: { fileSize: MAX_BYTES },
+  fileFilter: (_req, file, cb) => {
+    const lower = (file.originalname || "").toLowerCase();
+    const dot = lower.lastIndexOf(".");
+    const ext = dot >= 0 ? lower.slice(dot) : "";
+    const mime = (file.mimetype || "").toLowerCase();
+    const extOk = ALLOWED_EXTENSIONS.has(ext);
+    const mimeOk = ALLOWED_MIMES.has(mime) || ALLOWED_MIME_PREFIXES.some((p) => mime.startsWith(p));
+    if (!extOk || !mimeOk) {
+      const err = new Error(
+        "Only plain text contracts (.txt or .md) are supported. Paste the text instead if your file is a different format."
+      );
+      err.code = "INVALID_FILE_TYPE";
+      return cb(err);
+    }
+    cb(null, true);
+  }
 });
 function getUserId(req) {
   const userId = res_locals_userId(req);
@@ -274,6 +305,9 @@ function uploadSingleFile(req, res, next) {
         return res.status(413).json({
           error: "File is too large. The maximum size is 1 MB."
         });
+      }
+      if (code === "INVALID_FILE_TYPE") {
+        return res.status(415).json({ error: err.message });
       }
       console.error("[documents] upload failed:", err);
       return res.status(400).json({ error: "Could not read uploaded file." });
