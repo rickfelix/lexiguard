@@ -1,71 +1,50 @@
 # LexiGuard
 
-AI contract analyzer for freelance developers. Upload or paste a plain-text contract and get back IP/payment/scope risks plus a plain-English translation of the legalese.
+## File Map
 
-## Stack
+Read these files in order when starting a new feature:
 
-- **Frontend:** Vite 8 + React 18 + TypeScript + Tailwind CSS + React Router v7
-- **Backend:** Express 5 (TypeScript) running in Vite middleware mode in dev, served as compiled JS in prod
-- **DB:** Replit Postgres via Drizzle ORM (`postgres` driver). Tables: `users`, `documents`, `analysis_results`. UUID primary keys (`varchar` + `gen_random_uuid()`).
-- **AI:** OpenAI integration (`gpt-4o-mini`, JSON mode, strict schema). Env vars `AI_INTEGRATIONS_OPENAI_API_KEY` and `AI_INTEGRATIONS_OPENAI_BASE_URL`.
-- **Auth:** Anonymous only — `lg_uid` cookie issued on first request, scopes documents to that user.
+| File | Purpose | When to Read |
+|------|---------|-------------|
+| **docs/designs/** | Approved HTML designs for each screen — pixel-perfect reference | **First** — open the relevant screen's HTML before building any UI |
+| **docs/color-palette.md** | Brand colors as CSS custom properties — copy into global CSS | **First** — import :root block before writing any styles |
+| **docs/spec.md** | Complete specification: problem, users, architecture, screens | Before writing any code |
+| **docs/tasks.md** | Pre-decomposed implementation steps with acceptance criteria | Pick your next task from here |
+| **docs/architecture.md** | Tech stack, data model, API surface | When implementing backend/database work |
+| **docs/branding.md** | Typography, personas, brand voice | When implementing any UI |
+| **docs/product-roadmap.md** | Feature priorities and MVP phasing | When deciding build order |
 
-## Workflow
+## Build Workflow
 
-`Start application` runs `npm run dev` → `tsx watch server/index.ts`. The Express server boots Vite in middleware mode and serves both API (`/api/*`) and the SPA on port 5000 (host `0.0.0.0`, `allowedHosts: true`). Restart it whenever `package.json` scripts or anything in `server/` changes.
-
-## Folder Layout
-
-- `server/` — Express app
-  - `index.ts` — entry; mounts middleware, API routes, Vite/static
-  - `db.ts`, `schema.ts` — Drizzle DB client + schema
-  - `middleware/anonymousUser.ts` — issues/reads `lg_uid` cookie, ensures user row
-  - `routes/documents.ts` — `POST /api/documents`, `GET /api/documents/:id`, `GET /api/documents/:id/analysis`
-  - `services/ai.ts` — calls OpenAI, validates the JSON, persists `analysis_results`, marks documents `ready`/`failed`
-- `src/` — React SPA
-  - `pages/` — `Home.tsx` (landing), `Upload.tsx` (file/paste), `Document.tsx` (polls every 2 s, renders results)
-  - `components/` — `Layout.tsx`, `Header.tsx`, `Footer.tsx`
-  - `lib/api.ts` — typed fetch client (always sends cookies)
-- `docs/` — original product spec, designs, brand
-- `dist/` — production build output (`dist/client/` static assets, `dist/server/index.js` server bundle)
-
-## Scripts
-
-- `npm run dev` — dev server (Express + Vite middleware)
-- `npm run build` — `vite build` then `esbuild server/index.ts` into `dist/server/index.js`
-- `npm start` — runs the prod bundle (`NODE_ENV=production node dist/server/index.js`)
-- `npm run db:push` — sync Drizzle schema (use `--force` only when needed)
-
-## Deployment
-
-Configured for **autoscale**: `build = npm run build`, `run = npm start`. The user must click Publish from the main project after this task is merged.
-
-## Data Model
-
-- `users(id, cookie_id unique, created_at)` — one row per anonymous visitor
-- `documents(id, user_id, title, source: 'file'|'paste', content, char_count, status: 'pending'|'processing'|'ready'|'failed', error_message, created_at, updated_at)`
-- `analysis_results(id, document_id unique, summary, risks jsonb, translations jsonb, model, created_at)`
-
-`risks[]` items: `{title, category: IP|Payment|Scope|Termination|Liability|Confidentiality|Acceptance|Other, severity: low|medium|high, explanation, clauseExcerpt}`.
-`translations[]` items: `{original, clauseTitle, plainLanguage}`.
-
-## API
-
-All endpoints require the `lg_uid` cookie (set automatically). All document responses are scoped to the requesting cookie's user.
-
-- `POST /api/documents` — multipart form with either `file` (txt/md, ≤1 MB) or `text` field, plus optional `title`. Creates the document, kicks off analysis async, returns `{id, status:'pending'}`.
-- `GET /api/documents/:id` — document metadata + status.
-- `GET /api/documents/:id/analysis` — `{status, document, analysis}`. `status` is `processing` until the AI call resolves, then `ready` (with `analysis`) or `failed` (with `errorMessage`).
+For each feature or task:
+1. **Open docs/designs/** and find the HTML file for the screen you're building — match it closely
+2. **Copy the CSS custom properties** from docs/color-palette.md into your global stylesheet (do this once)
+3. **Read docs/tasks.md** and pick the next uncompleted task
+4. **Read docs/spec.md** for the full context on that feature
+5. **Use docs/architecture.md** for data model and API patterns
+6. **Check off** the task's acceptance criteria when done
 
 ## Coding Standards
+- TypeScript strict mode
+- Proper error handling on all API calls
+- Responsive design (mobile-first)
+- Semantic HTML with ARIA labels
+- Use environment variables for all secrets
+- Follow existing patterns in the codebase
 
-- TypeScript strict
-- API errors fail loudly (no silent fallbacks)
-- Cookies: `httpOnly`, `sameSite: 'lax'`, `secure` in prod
-- Mobile-first responsive Tailwind, brand tokens from `src/styles/globals.css`
+## Design Consistency
+The approved HTML designs in docs/designs/ were generated independently per screen.
+There may be inconsistencies between them (e.g., one screen missing a sidebar that all
+others have, different header layouts, inconsistent navigation patterns). When you notice
+inconsistencies:
+- Identify the **majority pattern** across all screens (e.g., 5 of 6 screens have a sidebar)
+- Apply the majority pattern to ALL screens — normalize the shared layout elements
+- Shared elements to keep consistent: navigation/sidebar, header, footer, color usage, typography scale, spacing system
+- Screen-specific elements (hero sections, data tables, forms) should follow the individual design
 
-## MVP Scope (this sprint)
-
-In: landing page (exact marketing copy from `docs/spec.md`), plain-text contract upload, OpenAI risk analysis, results dashboard, anonymous cookie, autoscale deploy config.
-
-Out: real auth, PDF/DOCX parsing, background queue, email/Stripe, multi-page marketing site, contract editing/sharing.
+## Key Rules
+- Do NOT invent features not in docs/tasks.md
+- Do NOT change the data model without checking docs/architecture.md
+- Do NOT use colors not in docs/color-palette.md — use the CSS custom properties
+- Do NOT deviate from the approved screen designs in docs/designs/ (except to normalize inconsistencies as described above)
+- Complete one task fully before starting the next
